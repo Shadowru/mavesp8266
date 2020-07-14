@@ -105,9 +105,9 @@ class RebootTimer {
         RebootTimer(int32_t reboot_timer){
             if(reboot_timer < 0){
                 _reboot_timer = 0;
+            } else {
+                _reboot_timer = reboot_timer * 1000;
             }
-
-            _reboot_timer = reboot_timer * 1000;
 
             uint32_t min_timer = 60 * 1000;
 
