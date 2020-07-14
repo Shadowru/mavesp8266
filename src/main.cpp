@@ -90,11 +90,12 @@ WebSocketsServer        webSocket = WebSocketsServer(81);
 //-- Accessors
 class MavESP8266WorldImp : public MavESP8266World {
 public:
-    MavESP8266Parameters*   getParameters   () { return &Parameters;    }
-    MavESP8266Component*    getComponent    () { return &Component;     }
-    MavESP8266Vehicle*      getVehicle      () { return &Vehicle;       }
-    MavESP8266GCS*          getGCS          () { return &GCS;           }
-    MavESP8266Log*          getLogger       () { return &Logger;        }
+    MavESP8266Parameters*   getParameters   () { return &Parameters;       }
+    MavESP8266Component*    getComponent    () { return &Component;        }
+    MavESP8266Vehicle*      getVehicle      () { return &Vehicle;          }
+    MavESP8266GCS*          getGCS          () { return &GCS;              }
+    MavESP8266Log*          getLogger       () { return &Logger;           }
+    WebSocketsServer*       getServer       () { return &WebSocketsServer; }
 };
 
 MavESP8266WorldImp      World;
