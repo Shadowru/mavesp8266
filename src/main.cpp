@@ -87,7 +87,7 @@ class RebootTimer {
             return true;
         }
     private:
-        uint32_t _reboot_timer;
+        int32_t _reboot_timer;
 }
 
 RebootTimer* rebootTimer;
