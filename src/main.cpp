@@ -42,6 +42,9 @@
 #include "mavesp8266_httpd.h"
 #include "mavesp8266_component.h"
 
+#include <WebSocketsServer.h>
+#include <Hash.h>
+
 #include <ESP8266mDNS.h>
 
 #define GPIO02  2
@@ -81,6 +84,7 @@ MavESP8266Vehicle       Vehicle;
 MavESP8266Httpd         updateServer;
 MavESP8266UpdateImp     updateStatus;
 MavESP8266Log           Logger;
+WebSocketsServer        webSocket = WebSocketsServer(81);
 
 //---------------------------------------------------------------------------------
 //-- Accessors
