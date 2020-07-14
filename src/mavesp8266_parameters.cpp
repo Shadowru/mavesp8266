@@ -41,8 +41,8 @@
 #include "mavesp8266_parameters.h"
 #include "crc.h"
 
-const char* kDEFAULT_SSID       = "PixRacer";
-const char* kDEFAULT_PASSWORD   = "pixracer";
+const char* kDEFAULT_SSID       = "GolfRobotics";
+const char* kDEFAULT_PASSWORD   = "golfrobotics";
 
 //-- Reserved space for EEPROM persistence. A change in this will cause all values to reset to defaults.
 #define EEPROM_SPACE            32 * sizeof(uint32_t)
@@ -64,6 +64,7 @@ uint32_t    _wifi_gatewaysta;
 uint32_t    _wifi_subnetsta;
 uint32_t    _uart_baud_rate;
 uint32_t    _flash_left;
+uint32_t    _reboot_timer;
 
 //-- Parameters
 //   No string support in parameters so we stash a char[16] into 4 uint32_t
@@ -94,7 +95,8 @@ uint32_t    _flash_left;
      {"WIFI_IPSTA",         &_wifi_ipsta,           MavESP8266Parameters::ID_IPSTA,     sizeof(uint32_t),   MAV_PARAM_TYPE_UINT32,  false},
      {"WIFI_GATEWAYSTA",    &_wifi_gatewaysta,      MavESP8266Parameters::ID_GATEWAYSTA,sizeof(uint32_t),   MAV_PARAM_TYPE_UINT32,  false},
      {"WIFI_SUBNET_STA",    &_wifi_subnetsta,       MavESP8266Parameters::ID_SUBNETSTA, sizeof(uint32_t),   MAV_PARAM_TYPE_UINT32,  false},
-     {"UART_BAUDRATE",      &_uart_baud_rate,       MavESP8266Parameters::ID_UART,      sizeof(uint32_t),   MAV_PARAM_TYPE_UINT32,  false}
+     {"UART_BAUDRATE",      &_uart_baud_rate,       MavESP8266Parameters::ID_UART,      sizeof(uint32_t),   MAV_PARAM_TYPE_UINT32,  false},
+     {"UART_REBOOT_TIMER",      &_reboot_timer,         MavESP8266Parameters::ID_REBOOT_TIMER,      sizeof(uint32_t),   MAV_PARAM_TYPE_UINT32,  false}
 };
 
 //---------------------------------------------------------------------------------
@@ -151,6 +153,7 @@ uint32_t    MavESP8266Parameters::getWifiStaIP      () { return _wifi_ipsta;    
 uint32_t    MavESP8266Parameters::getWifiStaGateway () { return _wifi_gatewaysta;   }
 uint32_t    MavESP8266Parameters::getWifiStaSubnet  () { return _wifi_subnetsta;    }
 uint32_t    MavESP8266Parameters::getUartBaudRate   () { return _uart_baud_rate;    }
+uint32_t    MavESP8266Parameters::getRebootTimer    () { return _reboot_timer;      }
 
 //---------------------------------------------------------------------------------
 //-- Reset all to defaults
@@ -167,6 +170,7 @@ MavESP8266Parameters::resetToDefaults()
     _wifi_ipsta        = 0;
     _wifi_gatewaysta   = 0;
     _wifi_subnetsta    = 0;
+    _reboot_timer      = -1;
     strncpy(_wifi_ssid,         kDEFAULT_SSID,      sizeof(_wifi_ssid));
     strncpy(_wifi_password,     kDEFAULT_PASSWORD,  sizeof(_wifi_password));
     strncpy(_wifi_ssidsta,      kDEFAULT_SSID,      sizeof(_wifi_ssidsta));
@@ -408,4 +412,11 @@ void
 MavESP8266Parameters::setUartBaudRate(uint32_t baud)
 {
     _uart_baud_rate = baud;
+}
+
+//---------------------------------------------------------------------------------
+void
+MavESP8266Parameters::setRebootTimer(uint32_t reboot_timer)
+{
+    _reboot_timer = reboot_timer;
 }

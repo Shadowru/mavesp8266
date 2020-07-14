@@ -89,7 +89,8 @@ public:
         ID_GATEWAYSTA,
         ID_SUBNETSTA,
         ID_UART,
-        ID_COUNT
+        ID_COUNT,
+        ID_REBOOT_TIMER
     };
 
     void        begin                       ();
@@ -112,6 +113,7 @@ public:
     uint32_t    getWifiStaGateway           ();
     uint32_t    getWifiStaSubnet            ();
     uint32_t    getUartBaudRate             ();
+    uint32_t    getRebootTimer              ();
 
     void        setDebugEnabled             (int8_t enabled);
     void        setWifiMode                 (int8_t mode);
@@ -127,6 +129,7 @@ public:
     void        setWifiStaSubnet            (uint32_t addr);
     void        setUartBaudRate             (uint32_t baud);
     void        setLocalIPAddress           (uint32_t ipAddress);
+    void        setRebootTimer              (uint32_t reboot_timer);
 
     stMavEspParameters* getAt               (int index);
 
