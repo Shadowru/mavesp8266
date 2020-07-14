@@ -116,7 +116,7 @@ class RebootTimer {
         }
     private:
         int32_t _reboot_timer;
-}
+};
 
 RebootTimer* _rebootTimer;
 
