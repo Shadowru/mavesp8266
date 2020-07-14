@@ -228,6 +228,7 @@ void setup() {
         //-- Start AP
         WiFi.mode(WIFI_AP);
         WiFi.setSleepMode(WIFI_NONE_SLEEP);
+        WiFi.setPhyMode(WIFI_PHY_MODE_11B);
         WiFi.encryptionType(AUTH_WPA2_PSK);
         WiFi.softAP(Parameters.getWifiSsid(), Parameters.getWifiPassword(), Parameters.getWifiChannel());
         localIP = WiFi.softAPIP();
@@ -235,7 +236,7 @@ void setup() {
     }
 
     //-- Boost power to Max
-    //WiFi.setOutputPower(20.5);
+    WiFi.setOutputPower(20.5);
     //-- MDNS
     char mdsnName[256];
     sprintf(mdsnName, "MavEsp8266-%d",localIP[3]);
