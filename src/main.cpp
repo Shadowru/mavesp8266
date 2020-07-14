@@ -249,7 +249,7 @@ void loop() {
     }
     updateServer.checkUpdates();
 
-    if(rebootTimer.isReboot()){
+    if(_rebootTimer.isReboot()){
         ESP.restart();
     }
 }
