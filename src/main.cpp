@@ -72,7 +72,7 @@ private:
     bool _isUpdating;
 };
 
-class RebootTimer(){
+class RebootTimer {
     public:
         RebootTimer(_uint32 reboot_timer){
             if(reboot_timer == -1){
