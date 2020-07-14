@@ -169,7 +169,15 @@ void reset_interrupt(){
 }
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+    switch(type) {
+        case WStype_DISCONNECTED:
+            break;
+        case WStype_CONNECTED:
+            break;
+        case WStype_BIN:
 
+            break;
+    }
 }
 
 //---------------------------------------------------------------------------------
@@ -219,6 +227,7 @@ void setup() {
     if(Parameters.getWifiMode() == WIFI_MODE_AP){
         //-- Start AP
         WiFi.mode(WIFI_AP);
+        WiFi.setSleepMode(WIFI_NONE_SLEEP);
         WiFi.encryptionType(AUTH_WPA2_PSK);
         WiFi.softAP(Parameters.getWifiSsid(), Parameters.getWifiPassword(), Parameters.getWifiChannel());
         localIP = WiFi.softAPIP();
@@ -226,7 +235,7 @@ void setup() {
     }
 
     //-- Boost power to Max
-    WiFi.setOutputPower(20.5);
+    //WiFi.setOutputPower(20.5);
     //-- MDNS
     char mdsnName[256];
     sprintf(mdsnName, "MavEsp8266-%d",localIP[3]);
@@ -247,8 +256,8 @@ void setup() {
 
     _rebootTimer = new RebootTimer(Parameters.getRebootTimer());
 
-    webSocket.begin();
-    webSocket.onEvent(webSocketEvent);
+//    webSocket.begin();
+//    webSocket.onEvent(webSocketEvent);
 }
 
 //---------------------------------------------------------------------------------
@@ -259,18 +268,17 @@ void loop() {
             GCS.readMessageRaw();
             delay(0);
             Vehicle.readMessageRaw();
-
         } else {
             GCS.readMessage();
             delay(0);
             Vehicle.readMessage();
         }
+
+        //webSocket.loop();
+
+        if(_rebootTimer->isReboot()){
+            ESP.restart();
+        }
     }
     updateServer.checkUpdates();
-
-    webSocket.loop();
-
-    if(_rebootTimer->isReboot()){
-        ESP.restart();
-    }
 }
