@@ -102,28 +102,36 @@ MavESP8266World* getWorld()
 
 class RebootTimer {
     public:
-        RebootTimer(int32_t reboot_timer ){
+        RebootTimer(int32_t reboot_timer){
             if(reboot_timer == -1){
                 _reboot_timer = 0;
             }
-            _reboot_timer = reboot_timer;
+
+            _reboot_timer = reboot_timer * 1000;
+
+            uint32_t min_timer = 60 * 1000;
+
+            if(_reboot_timer < min_timer){
+                _reboot_timer = min_timer;
+            }
+
+            uint64_t _op_start_time = millis();
+            _reboot_timer = _op_start_time + _reboot_timer;
         }
         bool isReboot(void){
             if(_reboot_timer == 0){
                 return false;
             }
+            if(millis() < _reboot_timer){
+                return false;
+            }
             return true;
         }
     private:
-        int32_t _reboot_timer;
+        uint64_t _reboot_timer;
 };
 
 RebootTimer* _rebootTimer;
-
-//setRebootTimer(RebootTimer* rebootTimer){
-//    _rebootTimer = rebootTimer;
-//}
-
 
 //---------------------------------------------------------------------------------
 //-- Wait for a DHCPD client
@@ -228,7 +236,6 @@ void setup() {
     //-- Initialize Update Server
     updateServer.begin(&updateStatus);
 
-    //setRebootTimer(new RebootTimer(Parameters.getRebootTimer()));
     _rebootTimer = new RebootTimer(Parameters.getRebootTimer());
 }
 
@@ -249,7 +256,7 @@ void loop() {
     }
     updateServer.checkUpdates();
 
-    if(_rebootTimer.isReboot()){
+    if(_rebootTimer->isReboot()){
         ESP.restart();
     }
 }
