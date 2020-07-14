@@ -72,7 +72,25 @@ private:
     bool _isUpdating;
 };
 
+class RebootTimer(){
+    public:
+        RebootTimer(_uint32 reboot_timer){
+            if(reboot_timer == -1){
+                _reboot_timer = 0;
+            }
+            _reboot_timer = reboot_timer;
+        }
+        bool isReboot(void){
+            if(_reboot_timer == 0){
+                return false;
+            }
+            return true;
+        }
+    private:
+        _uint32 _reboot_timer;
+}
 
+RebootTimer* rebootTimer;
 
 //-- Singletons
 IPAddress               localIP;
@@ -204,10 +222,9 @@ void setup() {
     Vehicle.begin(&GCS);
     //-- Initialize Update Server
     updateServer.begin(&updateStatus);
-}
 
-bool rebootTimer(){
-    return false;
+    rebootTimer = RebootTimer(Parameters.getRebootTimer());
+
 }
 
 //---------------------------------------------------------------------------------
@@ -227,7 +244,7 @@ void loop() {
     }
     updateServer.checkUpdates();
 
-    if(rebootTimer()){
+    if(rebootTimer.isReboot()){
         ESP.restart();
     }
 }
