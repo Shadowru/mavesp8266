@@ -120,9 +120,9 @@ class RebootTimer {
 
 RebootTimer* _rebootTimer;
 
-setRebootTimer(RebootTimer* rebootTimer){
-    _rebootTimer = rebootTimer;
-}
+//setRebootTimer(RebootTimer* rebootTimer){
+//    _rebootTimer = rebootTimer;
+//}
 
 
 //---------------------------------------------------------------------------------
@@ -228,8 +228,8 @@ void setup() {
     //-- Initialize Update Server
     updateServer.begin(&updateStatus);
 
-    setRebootTimer(new RebootTimer(Parameters.getRebootTimer()));
-
+    //setRebootTimer(new RebootTimer(Parameters.getRebootTimer()));
+    _rebootTimer = new RebootTimer(Parameters.getRebootTimer());
 }
 
 //---------------------------------------------------------------------------------
