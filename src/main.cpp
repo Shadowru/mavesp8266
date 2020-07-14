@@ -72,26 +72,6 @@ private:
     bool _isUpdating;
 };
 
-class RebootTimer {
-    public:
-        RebootTimer(uint32_t reboot_timer ){
-            if(reboot_timer == -1){
-                _reboot_timer = 0;
-            }
-            _reboot_timer = reboot_timer;
-        }
-        bool isReboot(void){
-            if(_reboot_timer == 0){
-                return false;
-            }
-            return true;
-        }
-    private:
-        int32_t _reboot_timer;
-}
-
-RebootTimer* rebootTimer;
-
 //-- Singletons
 IPAddress               localIP;
 MavESP8266Component     Component;
@@ -119,6 +99,31 @@ MavESP8266World* getWorld()
 {
     return &World;
 }
+
+class RebootTimer {
+    public:
+        RebootTimer(int32_t reboot_timer ){
+            if(reboot_timer == -1){
+                _reboot_timer = 0;
+            }
+            _reboot_timer = reboot_timer;
+        }
+        bool isReboot(void){
+            if(_reboot_timer == 0){
+                return false;
+            }
+            return true;
+        }
+    private:
+        int32_t _reboot_timer;
+}
+
+RebootTimer* _rebootTimer;
+
+setRebootTimer(RebootTimer* rebootTimer){
+    _rebootTimer = rebootTimer;
+}
+
 
 //---------------------------------------------------------------------------------
 //-- Wait for a DHCPD client
@@ -223,7 +228,7 @@ void setup() {
     //-- Initialize Update Server
     updateServer.begin(&updateStatus);
 
-    rebootTimer = RebootTimer(Parameters.getRebootTimer());
+    setRebootTimer(new RebootTimer(Parameters.getRebootTimer()));
 
 }
 
