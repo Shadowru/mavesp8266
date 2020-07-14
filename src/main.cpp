@@ -74,20 +74,20 @@ private:
 
 class RebootTimer {
     public:
-        RebootTimer::RebootTimer( _uint32 reboot_timer ){
+        RebootTimer(uint32_t reboot_timer ){
             if(reboot_timer == -1){
                 _reboot_timer = 0;
             }
             _reboot_timer = reboot_timer;
         }
-        bool RebootTimer::isReboot(void){
+        bool isReboot(void){
             if(_reboot_timer == 0){
                 return false;
             }
             return true;
         }
     private:
-        _uint32 _reboot_timer;
+        uint32_t _reboot_timer;
 }
 
 RebootTimer* rebootTimer;
