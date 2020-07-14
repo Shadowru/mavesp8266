@@ -168,6 +168,10 @@ void reset_interrupt(){
     ESP.reset();
 }
 
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+
+}
+
 //---------------------------------------------------------------------------------
 //-- Set things up
 void setup() {
@@ -242,6 +246,9 @@ void setup() {
     updateServer.begin(&updateStatus);
 
     _rebootTimer = new RebootTimer(Parameters.getRebootTimer());
+
+    webSocket.begin();
+    webSocket.onEvent(webSocketEvent);
 }
 
 //---------------------------------------------------------------------------------
@@ -260,6 +267,8 @@ void loop() {
         }
     }
     updateServer.checkUpdates();
+
+    webSocket.loop();
 
     if(_rebootTimer->isReboot()){
         ESP.restart();
