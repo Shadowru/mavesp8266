@@ -103,7 +103,7 @@ MavESP8266World* getWorld()
 class RebootTimer {
     public:
         RebootTimer(int32_t reboot_timer){
-            if(reboot_timer == -1){
+            if(reboot_timer < 0){
                 _reboot_timer = 0;
             }
 
