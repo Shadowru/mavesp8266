@@ -206,6 +206,10 @@ void setup() {
     updateServer.begin(&updateStatus);
 }
 
+bool rebootTimer(){
+    return false;
+}
+
 //---------------------------------------------------------------------------------
 //-- Main Loop
 void loop() {
@@ -222,4 +226,8 @@ void loop() {
         }
     }
     updateServer.checkUpdates();
+
+    if(rebootTimer()){
+        ESP.restart();
+    }
 }
