@@ -95,7 +95,7 @@ public:
     MavESP8266Vehicle*      getVehicle      () { return &Vehicle;          }
     MavESP8266GCS*          getGCS          () { return &GCS;              }
     MavESP8266Log*          getLogger       () { return &Logger;           }
-    WebSocketsServer*       getServer       () { return &WebSocketsServer; }
+    WebSocketsServer*       getServer       () { return &webSocket; }
 };
 
 MavESP8266WorldImp      World;
