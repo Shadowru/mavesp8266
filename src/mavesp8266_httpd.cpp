@@ -66,6 +66,7 @@ const char* kDEBUG      = "debug";
 const char* kREBOOT     = "reboot";
 const char* kPOSITION   = "position";
 const char* kMODE       = "mode";
+const char* kREBOOT_TIMER = "reboot_timer";
 
 const char* kFlashMaps[7] = {
     "512KB (256/256)",
@@ -184,7 +185,9 @@ void handle_getParameters()
         message += getWorld()->getParameters()->getAt(i)->id;
         message += "</td>";
         unsigned long val = 0;
-        if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_UINT32)
+        if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_INT32)
+            val = (unsigned long)*((int32_t*)getWorld()->getParameters()->getAt(i)->value);
+        else if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_UINT32)
             val = (unsigned long)*((uint32_t*)getWorld()->getParameters()->getAt(i)->value);
         else if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_UINT16)
             val = (unsigned long)*((uint16_t*)getWorld()->getParameters()->getAt(i)->value);
@@ -297,6 +300,11 @@ static void handle_setup()
     message += getWorld()->getParameters()->getUartBaudRate();
     message += "'><br>";
     
+    message += "Baudrate:&nbsp;";
+    message += "<input type='text' name='reboot_timer' value='";
+    message += getWorld()->getParameters()->getRebootTimer();
+    message += "'><br>";
+
     message += "<input type='submit' value='Save'>";
     message += "</form>";
     setNoCacheHeaders();
@@ -494,6 +502,10 @@ void handle_setParameters()
     if(webServer.hasArg(kMODE)) {
         ok = true;
         getWorld()->getParameters()->setWifiMode(webServer.arg(kMODE).toInt());
+    }
+    if(webServer.hasArg(kREBOOT_TIMER)) {
+        ok = true;
+        getWorld()->getParameters()->setRebootTimer(webServer.arg(kREBOOT_TIMER).toInt());
     }
     if(webServer.hasArg(kREBOOT)) {
         ok = true;
