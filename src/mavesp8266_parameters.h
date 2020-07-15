@@ -89,8 +89,8 @@ public:
         ID_GATEWAYSTA,
         ID_SUBNETSTA,
         ID_UART,
-        ID_COUNT,
-        ID_REBOOT_TIMER
+        ID_REBOOT_TIMER,
+        ID_COUNT
     };
 
     void        begin                       ();
