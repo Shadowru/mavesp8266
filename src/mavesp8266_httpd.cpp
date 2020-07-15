@@ -184,15 +184,16 @@ void handle_getParameters()
         message += "<tr><td>";
         message += getWorld()->getParameters()->getAt(i)->id;
         message += "</td>";
-        unsigned long val = 0;
-        if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_INT32)
-            val = (unsigned long)*((int32_t*)getWorld()->getParameters()->getAt(i)->value);
-        else if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_UINT32)
+        long val = 0;
+        if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_UINT32)
             val = (unsigned long)*((uint32_t*)getWorld()->getParameters()->getAt(i)->value);
         else if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_UINT16)
             val = (unsigned long)*((uint16_t*)getWorld()->getParameters()->getAt(i)->value);
+        else if(getWorld()->getParameters()->getAt(i)->type == MAV_PARAM_TYPE_INT32)
+            val = (long)*((int32_t*)getWorld()->getParameters()->getAt(i)->value);
         else
             val = (unsigned long)*((int8_t*)getWorld()->getParameters()->getAt(i)->value);
+
         message += "<td>";
         message += val;
         message += "</td></tr>";
@@ -300,7 +301,7 @@ static void handle_setup()
     message += getWorld()->getParameters()->getUartBaudRate();
     message += "'><br>";
     
-    message += "Baudrate:&nbsp;";
+    message += "Reboot timer:&nbsp;";
     message += "<input type='text' name='reboot_timer' value='";
     message += getWorld()->getParameters()->getRebootTimer();
     message += "'><br>";
