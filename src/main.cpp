@@ -108,9 +108,9 @@ MavESP8266World* getWorld()
 class RebootTimer {
     public:
         RebootTimer(int32_t reboot_timer){
-            if(reboot_timer < 0){
-                _reboot_timer = 0;
-            } else {
+            _do_not_reboot = true;
+
+            if(reboot_timer > 0){
                 _reboot_timer = reboot_timer * 1000;
 
                 uint32_t min_timer = 5 * 60 * 1000;
@@ -118,13 +118,14 @@ class RebootTimer {
                 if(_reboot_timer < min_timer){
                     _reboot_timer = min_timer;
                 }
+                _do_not_reboot = false;
             }
 
             uint64_t _op_start_time = millis();
             _reboot_timer = _op_start_time + _reboot_timer;
         }
         bool isReboot(void){
-            if(_reboot_timer == 0){
+            if(_do_not_reboot){
                 return false;
             }
             if(millis() < _reboot_timer){
@@ -134,6 +135,7 @@ class RebootTimer {
         }
     private:
         uint64_t _reboot_timer;
+        bool _do_not_reboot;
 };
 
 RebootTimer* _rebootTimer;
