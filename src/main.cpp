@@ -112,12 +112,12 @@ class RebootTimer {
                 _reboot_timer = 0;
             } else {
                 _reboot_timer = reboot_timer * 1000;
-            }
 
-            uint32_t min_timer = 60 * 1000;
+                uint32_t min_timer = 5 * 60 * 1000;
 
-            if(_reboot_timer < min_timer){
-                _reboot_timer = min_timer;
+                if(_reboot_timer < min_timer){
+                    _reboot_timer = min_timer;
+                }
             }
 
             uint64_t _op_start_time = millis();

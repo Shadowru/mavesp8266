@@ -63,8 +63,8 @@ uint32_t    _wifi_ipsta;
 uint32_t    _wifi_gatewaysta;
 uint32_t    _wifi_subnetsta;
 uint32_t    _uart_baud_rate;
+int32_t     _reboot_timer;
 uint32_t    _flash_left;
-int32_t    _reboot_timer;
 
 //-- Parameters
 //   No string support in parameters so we stash a char[16] into 4 uint32_t
@@ -153,7 +153,7 @@ uint32_t    MavESP8266Parameters::getWifiStaIP      () { return _wifi_ipsta;    
 uint32_t    MavESP8266Parameters::getWifiStaGateway () { return _wifi_gatewaysta;   }
 uint32_t    MavESP8266Parameters::getWifiStaSubnet  () { return _wifi_subnetsta;    }
 uint32_t    MavESP8266Parameters::getUartBaudRate   () { return _uart_baud_rate;    }
-int32_t    MavESP8266Parameters::getRebootTimer    () { return _reboot_timer;      }
+int32_t     MavESP8266Parameters::getRebootTimer    () { return _reboot_timer;      }
 
 //---------------------------------------------------------------------------------
 //-- Reset all to defaults
