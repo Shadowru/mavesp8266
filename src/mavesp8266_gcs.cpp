@@ -202,9 +202,13 @@ MavESP8266GCS::sendMessage(mavlink_message_t* message, int count) {
         // Translate message to buffer
         char buf[300];
         unsigned len = mavlink_msg_to_send_buffer((uint8_t*)buf, &message[i]);
+
+        getWorld()->getServer()->sendBIN(0, (uint8_t*)(void*)buf, len);
+        
         // Send it
         _status.packets_sent++;
         size_t sent = _udp.write((uint8_t*)(void*)buf, len);
+
         if(sent != len) {
             break;
             //-- Fibble attempt at not losing data until we get access to the socket TX buffer
@@ -216,6 +220,7 @@ MavESP8266GCS::sendMessage(mavlink_message_t* message, int count) {
             _udp.endPacket();
             return sentCount;
         }
+
         sentCount++;
     }
     _udp.endPacket();

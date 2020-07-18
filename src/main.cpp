@@ -42,9 +42,6 @@
 #include "mavesp8266_httpd.h"
 #include "mavesp8266_component.h"
 
-#include <WebSocketsServer.h>
-#include <Hash.h>
-
 #include <ESP8266mDNS.h>
 
 #define GPIO02  2
@@ -188,13 +185,14 @@ void reset_interrupt(){
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
     switch(type) {
         case WStype_DISCONNECTED:
-            Serial.println('Disconnected ...');
+            //Serial.println("Disconnected ...");
             break;
         case WStype_CONNECTED:
-            Serial.println('Connected ...');
+            //Serial.println("Connected ...");
             break;
         case WStype_BIN:
-            Serial.println('BIN');
+            //Serial.println("BIN");
+            getWorld()->getVehicle()->sendMessageRaw(payload, length);
             break;
     }
 }

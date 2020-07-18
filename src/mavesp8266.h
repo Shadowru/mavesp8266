@@ -42,6 +42,9 @@
 #include <WiFiClient.h>
 #include <WiFiUdp.h>
 
+#include <WebSocketsServer.h>
+#include <Hash.h>
+
 #undef F
 #include <ardupilotmega/mavlink.h>
 
@@ -146,6 +149,7 @@ public:
     virtual MavESP8266Vehicle*      getVehicle      () = 0;
     virtual MavESP8266GCS*          getGCS          () = 0;
     virtual MavESP8266Log*          getLogger       () = 0;
+    virtual WebSocketsServer*       getServer       () = 0;
 };
 
 //---------------------------------------------------------------------------------
