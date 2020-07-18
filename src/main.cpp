@@ -108,21 +108,36 @@ MavESP8266World* getWorld()
 class RebootTimer {
     public:
         RebootTimer(int32_t reboot_timer){
+            /*
+            Serial.print("Reboot timer : ");
+            Serial.println(reboot_timer);
+            */
             _do_not_reboot = true;
 
             if(reboot_timer > 0){
                 _reboot_timer = reboot_timer * 1000;
 
-                uint32_t min_timer = 3 * 60 * 1000;
+                uint32_t min_timer = 1 * 60 * 1000;
 
                 if(_reboot_timer < min_timer){
                     _reboot_timer = min_timer;
                 }
                 _do_not_reboot = false;
             }
+            /*
+            Serial.print(_do_not_reboot);            
+            Serial.print("  ");
 
             uint64_t _op_start_time = millis();
             _reboot_timer = _op_start_time + _reboot_timer;
+
+            uint32_t low = _op_start_time % 0xFFFFFFFF; 
+            Serial.println(low);
+            Serial.print("  ");
+
+            low = _reboot_timer % 0xFFFFFFFF; 
+            Serial.println(low);
+            */
         }
         bool isReboot(void){
             if(_do_not_reboot){
@@ -173,11 +188,13 @@ void reset_interrupt(){
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
     switch(type) {
         case WStype_DISCONNECTED:
+            Serial.println('Disconnected ...');
             break;
         case WStype_CONNECTED:
+            Serial.println('Connected ...');
             break;
         case WStype_BIN:
-
+            Serial.println('BIN');
             break;
     }
 }
@@ -185,7 +202,8 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 //---------------------------------------------------------------------------------
 //-- Set things up
 void setup() {
-    delay(1000);
+
+    //delay(1000);
     Parameters.begin();
 #ifdef ENABLE_DEBUG
     //   We only use it for non debug because GPIO02 is used as a serial
@@ -193,8 +211,8 @@ void setup() {
     Serial1.begin(115200);
 #else
     //-- Initialized GPIO02 (Used for "Reset To Factory")
-    pinMode(GPIO02, INPUT_PULLUP);
-    attachInterrupt(GPIO02, reset_interrupt, FALLING);
+    //pinMode(GPIO02, INPUT_PULLUP);
+    //attachInterrupt(GPIO02, reset_interrupt, FALLING);
 #endif
     Logger.begin(2048);
 
@@ -234,7 +252,7 @@ void setup() {
         WiFi.encryptionType(AUTH_WPA2_PSK);
         WiFi.softAP(Parameters.getWifiSsid(), Parameters.getWifiPassword(), Parameters.getWifiChannel());
         localIP = WiFi.softAPIP();
-        wait_for_client();
+        //wait_for_client();
     }
 
     //-- Boost power to Max
@@ -258,9 +276,8 @@ void setup() {
     updateServer.begin(&updateStatus);
 
     _rebootTimer = new RebootTimer(Parameters.getRebootTimer());
-
-//    webSocket.begin();
-//    webSocket.onEvent(webSocketEvent);
+    webSocket.begin();
+    webSocket.onEvent(webSocketEvent);
 }
 
 //---------------------------------------------------------------------------------
@@ -277,11 +294,11 @@ void loop() {
             Vehicle.readMessage();
         }
 
-        //webSocket.loop();
-
+        webSocket.loop();
         if(_rebootTimer->isReboot()){
             ESP.restart();
         }
     }
     updateServer.checkUpdates();
+
 }
