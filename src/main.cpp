@@ -294,6 +294,7 @@ void loop() {
 
         webSocket.loop();
         if(_rebootTimer->isReboot()){
+            webSocket.close();
             ESP.restart();
         }
     }
